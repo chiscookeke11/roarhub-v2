@@ -1,3 +1,4 @@
+import OurPillars from "@/components/OurPillars";
 import Hero from "../components/Hero";
 import WhoWeAre from "@/components/WhoWeAre";
 
@@ -8,6 +9,7 @@ export default function Home() {
     <div className="w-full bg-white h-full " >
       <Hero />
       <WhoWeAre />
+      <OurPillars />
     </div>
   )
 }
