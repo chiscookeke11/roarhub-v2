@@ -55,7 +55,7 @@ export default function Navbar() {
       </div>
 
       {open && (
-        <div className="md:hidden mt-4 border-t border-white/10 pt-4 flex flex-col items-start gap-4 text-sm">
+        <div className="md:hidden mt-4 border-t border-white/10 py-8 flex flex-col items-start gap-5 text-lg">
           {navLinks.map((link) => (
             <Link key={link.href} href={link.href} onClick={() => setOpen(false)}>
               {link.label}
