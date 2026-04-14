@@ -5,7 +5,7 @@ import { Lightbulb, Rocket, Users } from "lucide-react";
 
 export default function OurPillars() {
     return (
-        <section className="w-full flex flex-col gap-14 items-center justify-center font-plus-jakarta mt-28 px-[12%] bg-[#f8f9fa] py-24 " >
+        <section id="pillars" className="w-full flex flex-col gap-14 items-center justify-center font-plus-jakarta mt-28 px-[12%] bg-[#f8f9fa] py-24 " >
 
 
             <div className="text-center space-y-1 " >

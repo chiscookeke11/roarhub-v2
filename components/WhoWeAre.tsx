@@ -6,14 +6,14 @@ import Image from "next/image";
 
 export default function WhoWeAre() {
     return (
-        <div className=" w-full py-24 px-[5%] flex-col lg:flex-row flex items-center justify-center gap-20 lg:gap-100 font-plus-jakarta " >
+        <div id="whoWeAre" className=" w-full py-16 md:py-24 px-[5%] flex-col lg:flex-row flex items-center justify-center gap-20 lg:gap-100 font-plus-jakarta " >
 
 
 
-            <div className="w-112.5 h-72.25 bg-white shadow-2xl rounded-3xl p-4 flex items-center justify-center relative " >
+            <div className="w-80 h-55  md:w-112.5 md:h-72.25 bg-white shadow-2xl rounded-3xl p-4 flex items-center justify-center relative " >
 
-                <div className="w-35 h-27 bg-[#0e6efd] absolute flex flex-col items-start justify-center p-3 rounded-2xl text-sm text-white top-[-5%] left-[-5%]  "  >
-                    <span className="text-[32px] font-semibold " >1st</span>
+                <div className="w-30 h-22 md:w-35 md:h-27 bg-[#0e6efd] absolute flex flex-col items-start justify-center p-3 rounded-2xl text-sm text-white top-[-5%] left-[-5%]  "  >
+                    <span className=" text-2xl md:text-[32px] font-semibold " >1st</span>
                     In West Africa
                 </div>
 

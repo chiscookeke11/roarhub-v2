@@ -6,7 +6,7 @@ import Leadercard from "./ui/LeaderCard";
 
 export default function Leadership() {
     return (
-        <section className="w-full flex flex-col gap-14 items-center justify-center font-plus-jakarta mt-28 px-[12%] bg-[#f8f9fa] py-24  " >
+        <section id="team" className="w-full flex flex-col gap-14 items-center justify-center font-plus-jakarta mt-28 px-[12%] bg-[#f8f9fa] py-16 md:py-24  " >
 
 
             <div className="text-center space-y-1 " >

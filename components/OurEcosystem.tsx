@@ -7,7 +7,7 @@ import Image from "next/image";
 
 export default function OurEcosystem() {
     return (
-        <section className="w-full text-white px-[12%] font-plus-jakarta mt-10 grid grid-cols-1 lg:grid-cols-2 place-items-center justify-items-center gap-10 py-24 "  >
+        <section id="ecosystem" className="w-full text-white px-[5%] md:px-[12%] font-plus-jakarta mt-10 grid grid-cols-1 lg:grid-cols-2 place-items-center justify-items-center gap-10 py-16 md:py-24 "  >
 
             <div className=" w-full flex flex-col items-start gap-4 " >
                 <h4 className="text-[#0e6efd] text-base md:text-xl font-semibold uppercase " >Our Ecosystem</h4>
