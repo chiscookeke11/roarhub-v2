@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Button from "./ui/CustomButton";
+import Link from "next/link";
 
 
 export default function Hero() {
@@ -24,7 +25,7 @@ export default function Hero() {
 
                 <div className=" w-fit flex items-center justify-start gap-4 md:gap-6 font-outfit mt-5 "  >
                     <Button variant="primary" className=" md:text-lg bg-[#06a3da] " >Join the Hub</Button>
-                    <Button variant="outline" className=" md:text-lg " >Our Story</Button>
+                    <Link href={"#whoWeAre"}><Button variant="outline" className=" md:text-lg " >Our Story</Button></Link>
                 </div>
 
             </div>

@@ -38,8 +38,9 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${jakarta.variable} ${oufit.variable}  h-full antialiased`}
     >
-      <Navbar/>
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <Navbar />
+        {children}</body>
     </html>
   );
 }

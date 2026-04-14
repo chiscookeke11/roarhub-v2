@@ -24,13 +24,18 @@ export default function OurEcosystem() {
                 </p>
 
 
-                <Button
-                    className="text-lg mt-4 py-4 font-semibold bg-[#06a3da] hover:bg-[#06a3da]
+                <a
+                    href="/pdf/startups.pdf"
+                    download
+                >
+                    <Button
+                        className="text-lg mt-4 py-4 font-semibold bg-[#06a3da] hover:bg-[#06a3da]
 transition-all duration-200 ease-in-out hover:brightness-110 text-white *:
 shadow-[0_4px_14px_rgba(6,163,218,0.5)]
 "
-                >
-                    View Startup Directory (PDF)</Button>
+                    >
+                        View Startup Directory (PDF)</Button>
+                </a>
 
             </div>
 
@@ -53,14 +58,14 @@ shadow-[0_4px_14px_rgba(6,163,218,0.5)]
                 <Image src={"/homepage/adobe.png"} alt="pdf icon" width={200} height={200} className=" size-23 object-cover object-center animate-pulse " />
 
 
-               <a
-  href="/pdf/startups.pdf"
-  download
-  className="text-[#0e6efd] flex items-center justify-center gap-2 font-semibold cursor-pointer text-base mt-5"
->
-  <Download size={15} />
-  Download for Offline Viewing
-</a>
+                <a
+                    href="/pdf/startups.pdf"
+                    download
+                    className="text-[#0e6efd] flex items-center justify-center gap-2 font-semibold cursor-pointer text-base mt-5"
+                >
+                    <Download size={15} />
+                    Download for Offline Viewing
+                </a>
 
             </div>
 
