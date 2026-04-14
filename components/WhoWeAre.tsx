@@ -26,7 +26,7 @@ export default function WhoWeAre() {
 
                 <h2 className="text-[#2c3e50] text-2xl md:text-[38px] font-bold max-w-129 " >Innovation Embedded in Academia</h2>
 
-                <p className="text-base md:text-xl text-[#2c3e50] font-normal mt-3 max-w-156 "  >Roar Nigeria Hub is a community that provides professional support to technology enabled start-ups, researches, entrepreneurs and SME'S.
+                <p className="text-base md:text-xl text-[#2c3e50] font-normal mt-3 max-w-156 "  >Roar Nigeria Hub is a community that provides professional support to technology enabled start-ups, researches, entrepreneurs and SME&apos;S.
                     <br />
                     <br />
 
