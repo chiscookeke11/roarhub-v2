@@ -6,7 +6,7 @@ import Image from "next/image";
 
 export default function WhoWeAre() {
     return (
-        <div id="whoWeAre" className=" w-full py-16 md:py-24 px-[5%] flex-col lg:flex-row flex items-center justify-center gap-20 lg:gap-100 font-plus-jakarta " >
+        <div id="whoWeAre" className=" w-full py-16 md:py-24 px-[5%] flex-col lg:flex-row flex items-center justify-center gap-20 lg:gap-25 font-plus-jakarta " >
 
 
 
