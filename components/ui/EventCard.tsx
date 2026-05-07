@@ -1,28 +1,35 @@
+import { EventItem } from "@/types/types";
 import Image from "next/image";
+import Link from "next/link";
 
+type EventCardProps = {
+  event: EventItem;
+};
 
+export default function EventCard({ event }: EventCardProps) {
+  return (
+    <article className="w-full h-full rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur-sm transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl">
+      <div className="relative h-52 w-full overflow-hidden rounded-xl bg-slate-700">
+        <Image
+          src={event.image}
+          alt={event.title}
+          fill
+          className="object-cover object-center"
+        />
+      </div>
 
+      <div className="mt-4 flex flex-col gap-3">
+        <p className="text-sm font-medium text-blue-200">{event.date}</p>
+        <h3 className="text-xl font-semibold text-white">{event.title}</h3>
+        <p className="text-sm leading-relaxed text-slate-200">{event.excerpt}</p>
 
-export default function EventCard() {
-    return (
-        <div className=" w-full bg-white h-full rounded-2xl flex flex-col items-start gap-5 p-3 "  >
-
-            {/* the image  */}
-            <div className="w-full h-50 flex items-center justify-center overflow-hidden bg-gray-200 relative rounded-2xl "  >
-                <Image src={""} alt="image" fill className="object-center object-cover " />
-            </div>
-
-
-
-            {/* The text content */}
-            <div className="w-full flex items-start flex-col gap-4 " >
-
-                <h6>October 24, 2023</h6>
-
-                <h3>The Minimalist Manifesto</h3>
-
-            </div>
-
-        </div>
-    )
+        <Link
+          href={`/events/${event.slug}`}
+          className="mt-2 inline-flex w-fit rounded-full bg-[#0e6efd] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#0b5ed7]"
+        >
+          View event
+        </Link>
+      </div>
+    </article>
+  );
 }
