@@ -5,6 +5,7 @@ import OurEcosystem from "@/components/OurEcosystem";
 import CTASection from "@/components/CTASection";
 import Leadership from "@/components/Leadership";
 import Footer from "@/components/ui/Footer";
+import Events from "@/components/Events";
 
 
 
@@ -16,8 +17,9 @@ export default function Home() {
       <OurPillars />
       <OurEcosystem />
       <CTASection />
+      <Events />
       <Leadership />
-      <Footer/>
+      <Footer />
     </div>
   )
 }
