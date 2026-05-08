@@ -16,7 +16,7 @@ export default function AdminEventsDashboard({ initialEvents }: { initialEvents:
   const [saving, setSaving] = useState(false);
 
   const refreshEvents = async () => {
-    const { data } = await supabase.from("event").select("*").order("event_date", { ascending: false });
+    const { data } = await supabase.from("events").select("*").order("event_date", { ascending: false });
     setEvents((data as EventRecord[]) ?? []);
   };
 
@@ -24,9 +24,9 @@ export default function AdminEventsDashboard({ initialEvents }: { initialEvents:
     e.preventDefault();
     setSaving(true);
     if (selectedId) {
-      await supabase.from("event").update(form).eq("id", selectedId);
+      await supabase.from("events").update(form).eq("id", selectedId);
     } else {
-      await supabase.from("event").insert(form);
+      await supabase.from("events").insert(form);
     }
     setForm(emptyForm);
     setSelectedId(null);
@@ -45,7 +45,7 @@ export default function AdminEventsDashboard({ initialEvents }: { initialEvents:
               <p className="text-sm text-slate-300">{event.event_date} • {event.location}</p>
               <div className="mt-3 flex gap-3">
                 <button onClick={() => { setSelectedId(event.id); setForm({ title: event.title, slug: event.slug, event_date: event.event_date, image: event.image, excerpt: event.excerpt, description: event.description, location: event.location }); }} className="rounded bg-blue-600 px-3 py-1 text-sm">Edit</button>
-                <button onClick={async () => { setSaving(true); await supabase.from("event").delete().eq("id", event.id); await refreshEvents(); setSaving(false); }} className="rounded bg-red-600 px-3 py-1 text-sm">Delete</button>
+                <button onClick={async () => { setSaving(true); await supabase.from("events").delete().eq("id", event.id); await refreshEvents(); setSaving(false); }} className="rounded bg-red-600 px-3 py-1 text-sm">Delete</button>
               </div>
             </article>
           ))}
