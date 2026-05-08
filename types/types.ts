@@ -15,3 +15,16 @@ export type EventItem = {
   description: string;
   location: string;
 };
+
+export type EventRecord = {
+  id: number;
+  slug: string;
+  title: string;
+  event_date: string;
+  image: string;
+  excerpt: string;
+  description: string;
+  location: string;
+  created_at?: string;
+  updated_at?: string;
+};
