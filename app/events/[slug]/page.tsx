@@ -1,38 +1,96 @@
+"use client"
+
 import Image from "next/image";
-import { notFound } from "next/navigation";
-import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
-import { EventRecord } from "@/types/types";
-import { mapEventRecordToItem } from "@/utils/events";
+import { EventItem } from "@/types/types";
+import { useEffect, useState } from "react";
+import { supabase } from "@/utils/supabase/client";
+import { useParams } from "next/navigation";
+import { formatListDate } from "@/utils/events";
 
-type EventDetailPageProps = {
-  params: Promise<{ slug: string }>;
-};
+export default function EventDetailPage() {
 
-export default async function EventDetailPage({ params }: EventDetailPageProps) {
-  const { slug } = await params;
-  const supabase = createClient(await cookies());
-  const { data } = await supabase
-    .from("events")
-    .select("id, slug, title, event_date, image, excerpt, description, location")
-    .eq("slug", slug)
-    .single();
+  const params = useParams();
+  const slug = params.slug as string;
 
-  if (!data) notFound();
-  const event = mapEventRecordToItem(data as EventRecord);
+  const [event, setEvent] = useState<EventItem | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+
+    const fetchEvent = async () => {
+
+      const { data, error } = await supabase
+        .from("events")
+        .select("*")
+        .eq("slug", slug)
+        .maybeSingle();
+
+      if (error) {
+        console.error("Error fetching event:", error);
+      } else if (data) {
+        setEvent(data);
+      }
+
+      setLoading(false);
+    };
+
+    if (slug) {
+      fetchEvent();
+    }
+
+  }, [slug]);
+
+  if (loading) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center bg-[#1f3556]">
+        <h1 className="text-white font-plus-jakarta">
+          Loading...
+        </h1>
+      </div>
+    );
+  }
+
+  if (!event) {
+    return (
+      <div className="w-full h-screen flex items-center justify-center bg-[#1f3556]">
+        <h1 className="text-white font-plus-jakarta">
+          No event found
+        </h1>
+      </div>
+    );
+  }
 
   return (
-    <main className="min-h-screen bg-white px-[5%] py-14 text-slate-900">
+    <main className="min-h-screen bg-white px-[5%] py-14 text-slate-900 font-sans ">
       <article className="mx-auto max-w-4xl">
-        <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-[#0e6efd]">{event.date}</p>
-        <h1 className="mb-4 text-4xl font-bold">{event.title}</h1>
-        <p className="mb-8 text-lg text-slate-600">{event.location}</p>
 
-        <div className="relative mb-8 h-[360px] w-full overflow-hidden rounded-2xl">
-          <Image src={event.image} alt={event.title} fill className="object-cover" priority />
+        <p className="mb-2 text-sm font-semibold uppercase tracking-wide text-[#0e6efd]">
+          {formatListDate(event.date)}
+        </p>
+
+        <h1 className="mb-4 text-4xl font-bold">
+          {event.title}
+        </h1>
+
+        <p className="mb-8 text-lg text-slate-600">
+          {event.location}
+        </p>
+
+        <div className="relative mb-8 h-[260px] md:h-125 w-full overflow-hidden rounded-2xl">
+          <Image
+            src={event.image}
+            alt={event.title}
+            fill
+            sizes="(max-width: 768px) 100vw, 1200px"
+            className="object-cover"
+            priority
+          />
         </div>
 
-        <p className="text-lg leading-relaxed text-slate-700">{event.description}</p>
+        <p className="text-lg leading-relaxed text-slate-700">
+          {event.description}
+        </p>
+
       </article>
     </main>
   );

@@ -1,22 +1,41 @@
 "use client"
 
-
 import Link from "next/link";
 import EventCard from "./ui/EventCard";
-import { createClient } from "@/utils/supabase/server";
-import { EventRecord } from "@/types/types";
-import { mapEventRecordToItem } from "@/utils/events";
-import { events as fallbackEvents } from "@/data/events";
+import { EventItem } from "@/types/types";
+import { useEffect, useState } from "react";
+import { supabase } from "@/utils/supabase/client";
 
-export default async function Events() {
+export default function Events() {
+  const [eventItems, setEventItems] = useState<EventItem[] | null>(null)
+  const [loading, setLoading] = useState(true)
 
-  const { data } = await createClient
-    .from("events")
-    .select("*")
-    .order("date", { ascending: false })
-    .limit(3);
+  useEffect(() => {
 
-  const eventItems = (data as EventRecord[] | null)?.map(mapEventRecordToItem) ?? fallbackEvents;
+    const fetchEvents = async () => {
+
+      const { data, error } = await supabase
+        .from("events").select("*")
+        .order("date", { ascending: false })
+
+      if (error) {
+        setLoading(false)
+        console.error("Error fetching all events:", error)
+      }
+      else if (data) {
+        setEventItems(data)
+        console.log(data)
+      }
+
+      setLoading(false)
+    }
+
+    fetchEvents()
+  }, [])
+
+
+
+
 
   return (
     <section className="font-plus-jakarta w-full bg-[#2c3e50] px-[3%] py-24 text-white">
@@ -24,12 +43,19 @@ export default async function Events() {
         <h4 className="text-base font-semibold uppercase text-[#0e6efd] md:text-xl">Life at the Hub</h4>
         <h3 className="font-outfit max-w-129 text-2xl font-bold text-white md:text-[38px]">Event Gallery</h3>
       </div>
+      {
+        loading ? <div className="w-full h-full flex items-center justify-center " >
 
-      <div className="my-16 grid w-full grid-cols-1 gap-6 md:grid-cols-3">
-        {eventItems.map((event) => (
-          <EventCard key={event.id} event={event} />
-        ))}
-      </div>
+        </div> :
+
+
+          <div className="my-16 grid w-full grid-cols-1 gap-6 md:grid-cols-3 lg:grid-cols-4">
+            {eventItems?.map((event) => (
+              <EventCard key={event.id} event={event} />
+            ))}
+
+          </div>
+      }
 
       <div className="flex justify-center">
         <Link

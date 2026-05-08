@@ -4,6 +4,7 @@ import { EventItem } from "@/types/types";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { formatListDate } from "@/utils/events";
 
 type EventCardProps = {
   event: EventItem;
@@ -23,7 +24,7 @@ export default function EventCard({ event }: EventCardProps) {
       </div>
 
       <div className="mt-4 flex flex-col gap-3">
-        <p className="text-sm font-medium text-blue-200">{event.date}</p>
+        <p className="text-sm font-medium text-blue-200">{formatListDate(event.date)}</p>
         <h3 className="text-xl font-semibold text-white">{event.title}</h3>
         <p className="text-sm leading-relaxed text-slate-200">{event.excerpt}</p>
 

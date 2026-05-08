@@ -1,17 +1,16 @@
+"use client"
+
 import EventCard from "@/components/ui/EventCard";
-import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
-import { EventRecord } from "@/types/types";
-import { mapEventRecordToItem } from "@/utils/events";
+import { EventItem } from "@/types/types";
+import { supabase } from "@/utils/supabase/client";
+import { useEffect, useState } from "react";
 
-export default async function EventsPage() {
-  const supabase = createClient(await cookies());
-  const { data } = await supabase
-    .from("events")
-    .select("id, slug, title, event_date, image, excerpt, description, location")
-    .order("event_date", { ascending: false });
 
-  const eventItems = ((data as EventRecord[] | null) ?? []).map(mapEventRecordToItem);
+export default function EventsPage() {
+const [eventItems, setEventItems] = useState<EventItem[] | null>(null)
+
+
+
 
   return (
     <main className="min-h-screen bg-slate-950 px-[5%] py-16 text-white">
@@ -20,7 +19,7 @@ export default async function EventsPage() {
         <p className="mb-10 text-slate-300">Explore sessions, workshops, and conversations happening at Roar Hub.</p>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {eventItems.map((event) => (
+          {eventItems?.map((event) => (
             <EventCard key={event.id} event={event} />
           ))}
         </div>

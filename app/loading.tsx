@@ -1,7 +1,6 @@
 export default function Loading() {
   return (
-    <div className="dying-light-loading-screen" role="status" aria-live="polite">
-      <i className="dying-light-spinner" aria-hidden="true"></i>
+    <div className="bg-[#1f3556]" role="status" aria-live="polite">
       <span className="dying-light-loading-text">Loading...</span>
     </div>
   );

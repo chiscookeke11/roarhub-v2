@@ -16,3 +16,19 @@ export const mapEventRecordToItem = (event: EventRecord): EventItem => ({
   description: event.description,
   location: event.location,
 });
+
+
+
+
+// This function formats list date
+export const formatListDate = (value: string, showTime: boolean = false) => {
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Unknown";
+  return date.toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: showTime ? "2-digit" : undefined,
+    minute: showTime ? "2-digit" : undefined,
+  });
+};
