@@ -1,17 +1,19 @@
+"use client"
+
+
 import Link from "next/link";
 import EventCard from "./ui/EventCard";
 import { createClient } from "@/utils/supabase/server";
-import { cookies } from "next/headers";
 import { EventRecord } from "@/types/types";
 import { mapEventRecordToItem } from "@/utils/events";
 import { events as fallbackEvents } from "@/data/events";
 
 export default async function Events() {
-  const supabase = createClient(await cookies());
-  const { data } = await supabase
-    .from("event")
-    .select("id, slug, title, event_date, image, excerpt, description, location")
-    .order("event_date", { ascending: false })
+
+  const { data } = await createClient
+    .from("events")
+    .select("*")
+    .order("date", { ascending: false })
     .limit(3);
 
   const eventItems = (data as EventRecord[] | null)?.map(mapEventRecordToItem) ?? fallbackEvents;

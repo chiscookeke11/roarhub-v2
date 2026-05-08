@@ -18,7 +18,7 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 w-full bg-[#1f3556] text-white px-[5%] lg:px-[10%] py-4 font-plus-jakarta">
       <div className="mx-auto flex w-full max-w-7xl items-center justify-between gap-6">
-        <Link href="#hero" className="text-xl font-bold tracking-wide">
+        <Link href="/#hero" className="text-xl font-bold tracking-wide">
           <span className="text-blue-400">ROAR</span>HUB
         </Link>
 
