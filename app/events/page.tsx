@@ -7,7 +7,7 @@ import { mapEventRecordToItem } from "@/utils/events";
 export default async function EventsPage() {
   const supabase = createClient(await cookies());
   const { data } = await supabase
-    .from("event")
+    .from("events")
     .select("id, slug, title, event_date, image, excerpt, description, location")
     .order("event_date", { ascending: false });
 
