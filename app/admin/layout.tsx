@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 import Link from "next/link";
-import Image from "next/image";
 import { supabase } from "@/utils/supabase/client";
 import AuthModal from "@/components/AuthModal";
 
@@ -59,7 +58,8 @@ export default function AdminLayout({
   //  Loading state
   if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center text-[#008CC1] font-medium font-poppins">
+      <div className="h-screen flex items-center justify-center text-[#008CC1]
+      font-medium font-plus-jakarta">
         Checking authentication...
       </div>
     );
@@ -73,7 +73,7 @@ export default function AdminLayout({
   //  Logged in but NOT an admin
   if (!ALLOWED_ADMINS.includes(user.email ?? "")) {
     return (
-      <div className="h-screen flex flex-col items-center justify-center gap-4 font-poppins">
+      <div className="h-screen flex flex-col items-center justify-center gap-4 font-plus-jakarta">
         <h2 className="text-xl font-semibold text-red-600">
           Unauthorized Access
         </h2>
@@ -97,7 +97,8 @@ export default function AdminLayout({
     <div className="min-h-screen bg-white flex flex-col font-plus-jakarta">
 
       {/* Header */}
-      <header className="w-full flex  items-center md:items-center justify-between gap-6 px-6 py-4 bg-[#F7FCFE] border-b border-[#008CC1]/20">
+      <header className="w-full flex  items-center md:items-center justify-between gap-6 px-6
+       py-4 bg-[#F7FCFE] border-b border-[#008CC1]/20">
         <h2 className="text-xs font-semibold text-[#008CC1]">
           Welcome,{" "}
           <span className="font-normal break-all">{user.email}</span>

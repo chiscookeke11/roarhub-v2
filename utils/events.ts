@@ -17,6 +17,15 @@ export const mapEventRecordToItem = (event: EventRecord): EventItem => ({
   location: event.location,
 });
 
+export const mapEventItemToRecordDate = (date: string): string => {
+  const parsedDate = new Date(date);
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return date;
+  }
+
+  return parsedDate.toISOString().split("T")[0];
+};
 
 
 

@@ -2,35 +2,34 @@
 import { useEffect, useState } from "react"
 import { X } from "lucide-react"
 import toast from "react-hot-toast"
-import TiptapEditor from "./TipTapEditor"
-import Spinner from "../UI/Spinner"
-import { supabase } from "../../../lib/supabaseClient"
-import { NewsBlogType } from "@/Types/types"
 import Image from "next/image"
+import { EventItem } from "@/types/types"
+import { supabase } from "@/utils/supabase/client"
+import Spinner from "./ui/Spinner"
+import TiptapEditor from "./ui/TipTapEditor"
 
-interface UpdateBlogModalProps {
+interface UpdateEventModalProps {
     setShowEditBlogModal: React.Dispatch<React.SetStateAction<boolean>>
     selectedIndex: string
-    updateBlogInUI: (blog: NewsBlogType) => void
+    updateBlogInUI: (blog: EventItem) => void
 }
 
-export default function UpdateBlogModal({
+export default function UpdateEventModal({
     setShowEditBlogModal,
     selectedIndex,
     updateBlogInUI,
-}: UpdateBlogModalProps) {
+}: UpdateEventModalProps) {
     const [loading, setLoading] = useState(false)
-    const [selectedBlog, setSelectedBlog] = useState<NewsBlogType | null>(null)
-    const [formValues, setFormValues] = useState<NewsBlogType>({
+    const [selectedBlog, setSelectedBlog] = useState<EventItem | null>(null)
+    const [formValues, setFormValues] = useState<EventItem>({
         title: "",
-        content: "",
-        facebook_link: "",
-        instagram_link: "",
-        linkedin_link: "",
-        x_link: "",
-        publicationDate: null,
+      description: "",
         image: "",
-        id: "",
+        id: 0,
+        date: "",
+        excerpt: "",
+        location: "",
+        slug: ""
     })
     const [file, setFile] = useState<File | null>(null)
 
@@ -90,7 +89,7 @@ export default function UpdateBlogModal({
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (!formValues.title.trim() || !formValues.content.trim()) {
+        if (!formValues.title.trim() || !formValues.description.trim()) {
             toast.error("Please fill in all required fields")
             return
         }
@@ -109,14 +108,14 @@ export default function UpdateBlogModal({
             const { data, error } = await supabase
                 .from("news")
                 .update({
-                    title: formValues.title,
-                    content: formValues.content,
-                    facebook_link: formValues.facebook_link,
-                    instagram_link: formValues.instagram_link,
-                    linkedin_link: formValues.linkedin_link,
-                    x_link: formValues.x_link,
-                    image: imageUrl,
-                    publicationDate: new Date().toISOString(),
+                    // title: formValues.title,
+                    // content: formValues.content,
+                    // facebook_link: formValues.facebook_link,
+                    // instagram_link: formValues.instagram_link,
+                    // linkedin_link: formValues.linkedin_link,
+                    // x_link: formValues.x_link,
+                    // image: imageUrl,
+                    // publicationDate: new Date().toISOString(),
                 })
                 .eq("id", selectedIndex)
                 .select()
@@ -160,7 +159,7 @@ export default function UpdateBlogModal({
                     <X size={32} />
                 </button>
                 <h2 className="mx-auto text-center font-merienda font-extrabold text-[#008CC1] text-xl md:text-3xl">
-                    Update blog details
+                    Update Event details
                 </h2>
 
 
@@ -169,8 +168,8 @@ export default function UpdateBlogModal({
 
                 <label htmlFor="image" className="w-full flex flex-col gap-1">
                     <span className="text-lg font-semibold text-[#008CC1]">
-                        Blog image *
-                    </span>
+                        Event image *
+                </span>
                     <input
                         type="file"
                         id="image"
@@ -211,68 +210,11 @@ export default function UpdateBlogModal({
                 </label>
 
 
-                <div className="w-full grid grid-cols-2 place-items-center justify-items-center gap-5">
-                    <label htmlFor="x_link" className="w-full flex flex-col gap-1">
-                        <span className="text-lg font-semibold text-[#008CC1]">
-                            Twitter link
-                        </span>
-                        <input
-                            value={formValues.x_link ?? ""}
-                            name="x_link"
-                            onChange={handleChange}
-                            id="x_link"
-                            placeholder="Post X link"
-                            className="bg-transparent outline-none border-2 border-[#008CC1] py-2 px-3 text-[#1e1e1e] font-semibold text-base"
-                        />
-                    </label>
-
-                    <label htmlFor="linkedin_link" className="w-full flex flex-col gap-1">
-                        <span className="text-lg font-semibold text-[#008CC1]">
-                            LinkedIn link
-                        </span>
-                        <input
-                            value={formValues.linkedin_link ?? ""}
-                            name="linkedin_link"
-                            onChange={handleChange}
-                            id="linkedin_link"
-                            placeholder="Post LinkedIn link"
-                            className="bg-transparent outline-none border-2 border-[#008CC1] py-2 px-3 text-[#1e1e1e] font-semibold text-base"
-                        />
-                    </label>
-
-                    <label htmlFor="instagram_link" className="w-full flex flex-col gap-1">
-                        <span className="text-lg font-semibold text-[#008CC1]">
-                            Instagram link
-                        </span>
-                        <input
-                            value={formValues.instagram_link ?? ""}
-                            name="instagram_link"
-                            onChange={handleChange}
-                            id="instagram_link"
-                            placeholder="Post Instagram link"
-                            className="bg-transparent outline-none border-2 border-[#008CC1] py-2 px-3 text-[#1e1e1e] font-semibold text-base"
-                        />
-                    </label>
-
-                    <label htmlFor="facebook_link" className="w-full flex flex-col gap-1">
-                        <span className="text-lg font-semibold text-[#008CC1]">
-                            Facebook link
-                        </span>
-                        <input
-                            value={formValues.facebook_link ?? ""}
-                            name="facebook_link"
-                            onChange={handleChange}
-                            id="facebook_link"
-                            placeholder="Post Facebook link"
-                            className="bg-transparent outline-none border-2 border-[#008CC1] py-2 px-3 text-[#1e1e1e] font-semibold text-base"
-                        />
-                    </label>
-                </div>
 
                 <div className="w-full flex flex-col gap-1">
                     <span className="text-lg font-semibold text-[#008CC1]">Content *</span>
                     <TiptapEditor
-                        content={formValues.content ?? ""}
+                        content={formValues.description ?? ""}
                         onChange={handleTipTapChange}
                     />
                 </div>

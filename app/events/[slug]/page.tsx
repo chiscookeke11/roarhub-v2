@@ -6,12 +6,12 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/utils/supabase/client";
 import { useParams } from "next/navigation";
 import { formatListDate } from "@/utils/events";
+import Spinner from "@/components/ui/Spinner";
 
 export default function EventDetailPage() {
 
   const params = useParams();
   const slug = params.slug as string;
-
   const [event, setEvent] = useState<EventItem | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -42,10 +42,8 @@ export default function EventDetailPage() {
 
   if (loading) {
     return (
-      <div className="w-full h-screen flex items-center justify-center bg-[#1f3556]">
-        <h1 className="text-white font-plus-jakarta">
-          Loading...
-        </h1>
+      <div className="w-full h-screen flex items-center justify-center bg-white ">
+        <Spinner />
       </div>
     );
   }

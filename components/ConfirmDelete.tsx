@@ -1,6 +1,7 @@
+import { supabase } from "@/utils/supabase/client";
 import { SetStateAction } from "react";
 import toast from "react-hot-toast";
-import { supabase } from "../../../lib/supabaseClient";
+
 
 interface ConfirmDeleteProps {
   setConfirmDeleteModal?: React.Dispatch<SetStateAction<boolean>>;
@@ -34,14 +35,14 @@ export default function ConfirmDelete({
       await deleteItem(id, collectionName);
 
       toast.dismiss(toastId);
-      toast.success("Blog deleted successfully");
+      toast.success("Event deleted successfully");
 
       onDelete?.(id);
       setConfirmDeleteModal?.(false);
     } catch (err) {
       console.error(err);
       toast.dismiss(toastId);
-      toast.error("Failed to delete blog!");
+      toast.error("Failed to delete event!");
     }
   };
 
