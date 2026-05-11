@@ -39,8 +39,17 @@ export default function AddEventModal({ setOpenBlogModal, addBlogToUI }: AddEven
     const handleTipTapChange = (value: string) => {
         setFormValues((prev) => ({
             ...prev,
-            content: value,
+            description: value,
         }))
+    }
+
+    const createSlug = (value: string) => {
+        return value
+            .trim()
+            .toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, "")
+            .replace(/\s+/g, "-")
+            .replace(/-+/g, "-")
     }
 
     const uploadImageToCloudinary = async (file: File): Promise<string> => {
@@ -67,7 +76,7 @@ export default function AddEventModal({ setOpenBlogModal, addBlogToUI }: AddEven
 
 
 
-        if (!formValues.title.trim() || !formValues.description.trim()) {
+        if (!formValues.title.trim() || !formValues.description.trim() || !formValues.excerpt.trim() || !formValues.date || !formValues.location.trim()) {
             toast.error("Please fill in all fields")
             return
         }
@@ -82,10 +91,22 @@ export default function AddEventModal({ setOpenBlogModal, addBlogToUI }: AddEven
         try {
             // Uploading image
             const imageUrl = await uploadImageToCloudinary(file)
+            const slug = createSlug(formValues.title)
+
+            if (!slug) {
+                toast.error("Unable to generate event slug from title")
+                return
+            }
 
             // saving to supabase
             const { data, error } = await supabase.from("events").insert({
-
+                title: formValues.title.trim(),
+                slug,
+                event_date: formValues.date,
+                image: imageUrl,
+                excerpt: formValues.excerpt.trim(),
+                description: formValues.description.trim(),
+                location: formValues.location.trim(),
             }).select()
 
             if (error) {
