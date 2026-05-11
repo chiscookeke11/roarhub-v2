@@ -43,23 +43,29 @@ export default function AddEventModal({ setOpenBlogModal, addBlogToUI }: AddEven
         }))
     }
 
-    const uploadImageToCloudinary = async (file: File): Promise<string> => {
-        const formData = new FormData()
-        formData.append("file", file)
-        formData.append("upload_preset", "lsp_preset")
-        formData.append("cloud_name", "dmgwgxdd9")
-
-        const response = await fetch("https://api.cloudinary.com/v1_1/dmgwgxdd9/image/upload", {
-            method: "POST",
-            body: formData,
-        })
-
-        if (!response.ok) {
-            throw new Error("Image upload failed")
+    const uploadImage = async () => {
+        if (!file) {
+            toast.error("Please select an image")
+            return
         }
 
-        const data = await response.json()
-        return data.secure_url
+        const filename = `${Date.now()}-${file.name}`
+
+        const { error } = await supabase.storage
+            .from("event images")
+            .upload(filename, file)
+
+        if (error) {
+            console.error("Upload error", error.message)
+            toast.error("Upload failed")
+            return
+        }
+
+        const { data: publicUrl } = supabase.storage
+            .from("event images")
+            .getPublicUrl(filename)
+
+        return publicUrl.publicUrl
     }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -81,7 +87,7 @@ export default function AddEventModal({ setOpenBlogModal, addBlogToUI }: AddEven
 
         try {
             // Uploading image
-            const imageUrl = await uploadImageToCloudinary(file)
+            const imageUrl = await uploadImage()
 
             // saving to supabase
             const { data, error } = await supabase.from("events").insert({
