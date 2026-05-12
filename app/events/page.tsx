@@ -7,9 +7,33 @@ import { useEffect, useState } from "react";
 
 
 export default function EventsPage() {
-const [eventItems, setEventItems] = useState<EventItem[] | null>(null)
+  const [eventItems, setEventItems] = useState<EventItem[] | null>(null)
+  const [loading, setLoading] = useState(true)
 
 
+
+  useEffect(() => {
+
+    const fetchEvents = async () => {
+
+      const { data, error } = await supabase
+        .from("events").select("*")
+        .order("date", { ascending: false })
+
+      if (error) {
+        setLoading(false)
+        console.error("Error fetching all events:", error)
+      }
+      else if (data) {
+        setEventItems(data)
+        console.log(data)
+      }
+
+      setLoading(false)
+    }
+
+    fetchEvents()
+  }, [])
 
 
   return (

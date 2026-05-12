@@ -1,10 +1,10 @@
 "use client";
 
+import { supabase } from "@/utils/supabase/client";
 import { FormEvent, useState } from "react";
-import { UpClient } from "@/utils/supabase/client";
+
 
 export default function AdminAuthModal() {
-  const supabase = UpClient();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);

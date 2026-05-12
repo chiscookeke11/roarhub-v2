@@ -1,9 +1,9 @@
 "use client";
 
 import { FormEvent, useState } from "react";
-import { createClient } from "@/utils/supabase/client";
 import { EventItem, EventRecord } from "@/types/types";
 import { mapEventItemToRecordDate } from "@/utils/events";
+import { supabase } from "@/utils/supabase/client";
 
 type EventForm = Omit<EventItem, "id">;
 
@@ -18,7 +18,6 @@ const emptyForm: EventForm = {
 };
 
 export default function AdminEventsDashboard({ initialEvents }: { initialEvents: EventRecord[] }) {
-  const supabase = createClient();
   const [events, setEvents] = useState<EventItem[]>(
     initialEvents.map((event) => ({
       id: event.id,

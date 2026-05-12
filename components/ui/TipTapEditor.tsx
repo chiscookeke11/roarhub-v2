@@ -2,7 +2,7 @@
 
 import type React from "react"
 import { useEditor, EditorContent } from "@tiptap/react"
-import Spinner from "../UI/Spinner"
+import Spinner from "../../components/ui/Spinner"
 import StarterKit from "@tiptap/starter-kit"
 import { useEffect } from "react"
 

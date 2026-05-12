@@ -10,7 +10,6 @@ import { supabase } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
 
 
-
 export default function Page() {
     const [events, setEvents] = useState<EventItem[] | null>(null)
     const [showOptionsIndex, setShowOptionsIndex] = useState<string | null>(null);
@@ -35,7 +34,6 @@ export default function Page() {
             }
             else if (data) {
                 setEvents(data)
-                console.log(data)
             }
 
             setLoading(false)
