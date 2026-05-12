@@ -6,6 +6,7 @@ import { X } from "lucide-react"
 import { EventItem } from "@/types/types"
 import { supabase } from "@/utils/supabase/client"
 import TiptapEditor from "./ui/TipTapEditor"
+import { title } from "process"
 
 
 interface AddEventModalProps {
@@ -39,8 +40,17 @@ export default function AddEventModal({ setOpenBlogModal, addBlogToUI }: AddEven
     const handleTipTapChange = (value: string) => {
         setFormValues((prev) => ({
             ...prev,
-            content: value,
+            description: value,
         }))
+    }
+
+    const createSlug = (value: string) => {
+        return value
+            .trim()
+            .toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, "")
+            .replace(/\s+/g, "-")
+            .replace(/-+/g, "-")
     }
 
     const uploadImage = async () => {
@@ -73,7 +83,7 @@ export default function AddEventModal({ setOpenBlogModal, addBlogToUI }: AddEven
 
 
 
-        if (!formValues.title.trim() || !formValues.description.trim()) {
+        if (!formValues.title.trim() || !formValues.description.trim() || !formValues.excerpt.trim() || !formValues.date || !formValues.location.trim()) {
             toast.error("Please fill in all fields")
             return
         }
@@ -91,7 +101,13 @@ export default function AddEventModal({ setOpenBlogModal, addBlogToUI }: AddEven
 
             // saving to supabase
             const { data, error } = await supabase.from("events").insert({
-
+                title: formValues.title.trim(),
+                slug: createSlug(title),
+                event_date: formValues.date,
+                image: imageUrl,
+                excerpt: formValues.excerpt.trim(),
+                description: formValues.description.trim(),
+                location: formValues.location.trim(),
             }).select()
 
             if (error) {
@@ -251,6 +267,13 @@ export default function AddEventModal({ setOpenBlogModal, addBlogToUI }: AddEven
                         className="flex items-center text-white justify-center gap-4 bg-[#008CC1] cursor-pointer hover:bg-[#008CC1]/90 py-3 px-6 h-fit text-base font-medium font-lato"
                     >
                         {loading ? "Uploading ..." : "Add Event"}
+                    </button>
+                </div>
+            </form>
+        </div>
+    )
+}
+Event"}
                     </button>
                 </div>
             </form>
