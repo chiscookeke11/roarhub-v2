@@ -41,6 +41,11 @@ export default function EventsPage() {
           <div className="flex min-h-[200px] items-center justify-center">
             <Spinner />
           </div>
+        ) : eventItems.length === 0 ? (
+          <div className="rounded-lg border border-slate-800 bg-slate-900/70 p-8 text-center">
+            <p className="text-lg font-semibold text-white">No events yet</p>
+            <p className="mt-2 text-slate-300">Check back soon for upcoming sessions and workshops.</p>
+          </div>
         ) : (
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
             {eventItems.map((event) => (
