@@ -16,7 +16,7 @@ export default function EventsPage() {
       const { data, error } = await supabase
         .from("events")
         .select("*")
-        .order("event_date", { ascending: false });
+        .order("date", { ascending: false });
 
       if (error) {
         console.error("Error fetching all events:", error);
