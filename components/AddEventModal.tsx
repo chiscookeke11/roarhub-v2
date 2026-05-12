@@ -82,7 +82,12 @@ export default function AddEventModal({ setOpenBlogModal, addBlogToUI }: AddEven
 
 
 
-        if (!formValues.title.trim() || !formValues.description.trim() || !formValues.excerpt.trim() || !formValues.date || !formValues.location.trim()) {
+        if (!formValues.title.trim()
+             || !formValues.description.trim()
+         || !formValues.excerpt.trim()
+         || !formValues.date
+         || !formValues.location.trim()) {
+
             toast.error("Please fill in all fields")
             return
         }
@@ -106,7 +111,7 @@ export default function AddEventModal({ setOpenBlogModal, addBlogToUI }: AddEven
             const { data, error } = await supabase.from("events").insert({
                 title: formValues.title.trim(),
                 slug: createSlug(formValues.title),
-                event_date: formValues.date,
+                date: formValues.date,
                 image: imageUrl,
                 excerpt: formValues.excerpt.trim(),
                 description: formValues.description.trim(),
@@ -114,7 +119,7 @@ export default function AddEventModal({ setOpenBlogModal, addBlogToUI }: AddEven
             }).select()
 
             if (error) {
-                console.error("Failed to upload blog")
+                console.error("Failed to upload blog", error.message)
                 toast.error("Failed to upload blog")
                 return;
             }

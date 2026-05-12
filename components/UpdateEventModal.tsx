@@ -66,25 +66,7 @@ export default function UpdateEventModal({
     }
 
     //  Upload image to Cloudinary
-    const uploadImageToCloudinary = async (file: File): Promise<string> => {
-        const formData = new FormData()
-        formData.append("file", file)
-        formData.append("upload_preset", "lsp_preset")
-        formData.append("cloud_name", "dmgwgxdd9")
 
-        const response = await fetch(
-            "https://api.cloudinary.com/v1_1/dmgwgxdd9/image/upload",
-            {
-                method: "POST",
-                body: formData,
-            }
-        )
-
-        if (!response.ok) throw new Error("Image upload failed")
-
-        const data = await response.json()
-        return data.secure_url
-    }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -101,7 +83,7 @@ export default function UpdateEventModal({
 
             // If a new image is selected, upload it
             if (file) {
-                imageUrl = await uploadImageToCloudinary(file)
+                imageUrl = await uploadImage()
             }
 
             //  Update blog in Supabase
@@ -158,12 +140,10 @@ export default function UpdateEventModal({
                 >
                     <X size={32} />
                 </button>
+
                 <h2 className="mx-auto text-center font-merienda font-extrabold text-[#008CC1] text-xl md:text-3xl">
                     Update Event details
                 </h2>
-
-
-
 
 
                 <label htmlFor="image" className="w-full flex flex-col gap-1">
