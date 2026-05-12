@@ -107,7 +107,7 @@ export default function AddEventModal({ setOpenBlogModal, addBlogToUI }: AddEven
                 return
             }
 
-            // saving to supabase
+            // saving to supabase table
             const { data, error } = await supabase.from("events").insert({
                 title: formValues.title.trim(),
                 slug: createSlug(formValues.title),
