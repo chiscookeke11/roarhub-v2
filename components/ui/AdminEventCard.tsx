@@ -15,7 +15,7 @@ type EventCardProps = {
     setConfirmDeleteModal?: React.Dispatch<SetStateAction<boolean>>
 };
 
-export default function AdminEventCard({ data: event, showOptionsIndex, setConfirmDeleteModal,
+export default function AdminEventCard({ data: event, setConfirmDeleteModal,
      setSelectedIndex, setShowEditBlogModal, setShowOptionsIndex }: EventCardProps) {
 
     return (
