@@ -6,7 +6,6 @@ import { X } from "lucide-react"
 import { EventItem } from "@/types/types"
 import { supabase } from "@/utils/supabase/client"
 import TiptapEditor from "./ui/TipTapEditor"
-import { title } from "process"
 
 
 interface AddEventModalProps {
@@ -98,11 +97,15 @@ export default function AddEventModal({ setOpenBlogModal, addBlogToUI }: AddEven
         try {
             // Uploading image
             const imageUrl = await uploadImage()
+            if (!imageUrl) {
+                toast.error("Image upload failed")
+                return
+            }
 
             // saving to supabase
             const { data, error } = await supabase.from("events").insert({
                 title: formValues.title.trim(),
-                slug: createSlug(title),
+                slug: createSlug(formValues.title),
                 event_date: formValues.date,
                 image: imageUrl,
                 excerpt: formValues.excerpt.trim(),
@@ -267,13 +270,6 @@ export default function AddEventModal({ setOpenBlogModal, addBlogToUI }: AddEven
                         className="flex items-center text-white justify-center gap-4 bg-[#008CC1] cursor-pointer hover:bg-[#008CC1]/90 py-3 px-6 h-fit text-base font-medium font-lato"
                     >
                         {loading ? "Uploading ..." : "Add Event"}
-                    </button>
-                </div>
-            </form>
-        </div>
-    )
-}
-Event"}
                     </button>
                 </div>
             </form>
