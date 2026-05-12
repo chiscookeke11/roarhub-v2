@@ -23,28 +23,26 @@ export default function UpdateEventModal({
     const [selectedBlog, setSelectedBlog] = useState<EventItem | null>(null)
     const [formValues, setFormValues] = useState<EventItem>({
         title: "",
-      description: "",
+        description: "",
         image: "",
         id: 0,
         date: "",
         excerpt: "",
         location: "",
-        slug: ""
+        slug: "",
     })
     const [file, setFile] = useState<File | null>(null)
 
-    //  Fetch existing blog details
     useEffect(() => {
         const fetchBlog = async () => {
             setLoading(true)
             const { data, error } = await supabase
-                .from("news")
+                .from("events")
                 .select("*")
                 .eq("id", selectedIndex)
                 .single()
 
             if (error) {
-                // console.error(error)
                 toast.error("Error fetching blog data")
             } else {
                 setSelectedBlog(data)
@@ -62,16 +60,44 @@ export default function UpdateEventModal({
     }
 
     const handleTipTapChange = (value: string) => {
-        setFormValues((prev) => ({ ...prev, content: value }))
+        setFormValues((prev) => ({ ...prev, description: value }))
     }
 
-    //  Upload image to Cloudinary
+    const createSlug = (value: string) => {
+        return value
+            .trim()
+            .toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, "")
+            .replace(/\s+/g, "-")
+            .replace(/-+/g, "-")
+    }
 
+    const uploadImage = async () => {
+        if (!file) return formValues.image
+
+        const filename = `${Date.now()}-${file.name}`
+        const { error } = await supabase.storage.from("event images").upload(filename, file)
+
+        if (error) {
+            console.error("Upload error", error.message)
+            toast.error("Upload failed")
+            return null
+        }
+
+        const { data: publicUrl } = supabase.storage.from("event images").getPublicUrl(filename)
+        return publicUrl.publicUrl
+    }
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (!formValues.title.trim() || !formValues.description.trim()) {
+        if (
+            !formValues.title.trim() ||
+            !formValues.description.trim() ||
+            !formValues.excerpt.trim() ||
+            !formValues.date ||
+            !formValues.location.trim()
+        ) {
             toast.error("Please fill in all required fields")
             return
         }
@@ -79,32 +105,28 @@ export default function UpdateEventModal({
         setLoading(true)
 
         try {
-            let imageUrl = formValues.image
-
-            // If a new image is selected, upload it
-            if (file) {
-                imageUrl = await uploadImage()
+            const imageUrl = file ? await uploadImage() : formValues.image
+            if (!imageUrl) {
+                toast.error("Image upload failed")
+                return
             }
 
-            //  Update blog in Supabase
             const { data, error } = await supabase
-                .from("news")
+                .from("events")
                 .update({
-                    // title: formValues.title,
-                    // content: formValues.content,
-                    // facebook_link: formValues.facebook_link,
-                    // instagram_link: formValues.instagram_link,
-                    // linkedin_link: formValues.linkedin_link,
-                    // x_link: formValues.x_link,
-                    // image: imageUrl,
-                    // publicationDate: new Date().toISOString(),
+                    title: formValues.title.trim(),
+                    slug: createSlug(formValues.title),
+                    date: formValues.date,
+                    image: imageUrl,
+                    excerpt: formValues.excerpt.trim(),
+                    description: formValues.description.trim(),
+                    location: formValues.location.trim(),
                 })
                 .eq("id", selectedIndex)
                 .select()
 
             if (error) {
                 toast.error(error.message)
-                // console.error(error)
                 return
             }
 
@@ -145,11 +167,8 @@ export default function UpdateEventModal({
                     Update Event details
                 </h2>
 
-
                 <label htmlFor="image" className="w-full flex flex-col gap-1">
-                    <span className="text-lg font-semibold text-[#008CC1]">
-                        Event image *
-                </span>
+                    <span className="text-lg font-semibold text-[#008CC1]">Event image *</span>
                     <input
                         type="file"
                         id="image"
@@ -183,20 +202,54 @@ export default function UpdateEventModal({
                         id="title"
                         name="title"
                         onChange={handleChange}
-                        placeholder="Enter blog title"
+                        placeholder="Enter Event title"
                         className="bg-transparent outline-none border-2 border-[#008CC1] py-2 px-3 text-[#1e1e1e] font-semibold text-base"
                         required
                     />
                 </label>
 
+                <label htmlFor="excerpt" className="w-full flex flex-col gap-1">
+                    <span className="text-lg font-semibold text-[#008CC1]">Tagline *</span>
+                    <input
+                        value={formValues.excerpt ?? ""}
+                        id="excerpt"
+                        name="excerpt"
+                        onChange={handleChange}
+                        placeholder="Enter Event Tagline"
+                        className="bg-transparent outline-none border-2 border-[#008CC1] py-2 px-3 text-[#1e1e1e] font-semibold text-base"
+                        required
+                    />
+                </label>
 
+                <label htmlFor="date" className="w-full flex flex-col gap-1">
+                    <span className="text-lg font-semibold text-[#008CC1]">Date *</span>
+                    <input
+                        value={formValues.date ?? ""}
+                        id="date"
+                        name="date"
+                        type="date"
+                        onChange={handleChange}
+                        className="bg-transparent outline-none border-2 border-[#008CC1] py-2 px-3 text-[#1e1e1e] font-semibold text-base"
+                        required
+                    />
+                </label>
+
+                <label htmlFor="location" className="w-full flex flex-col gap-1">
+                    <span className="text-lg font-semibold text-[#008CC1]">Location *</span>
+                    <input
+                        value={formValues.location ?? ""}
+                        id="location"
+                        name="location"
+                        onChange={handleChange}
+                        placeholder="Enter Event Location"
+                        className="bg-transparent outline-none border-2 border-[#008CC1] py-2 px-3 text-[#1e1e1e] font-semibold text-base"
+                        required
+                    />
+                </label>
 
                 <div className="w-full flex flex-col gap-1">
                     <span className="text-lg font-semibold text-[#008CC1]">Content *</span>
-                    <TiptapEditor
-                        content={formValues.description ?? ""}
-                        onChange={handleTipTapChange}
-                    />
+                    <TiptapEditor content={formValues.description ?? ""} onChange={handleTipTapChange} />
                 </div>
 
                 <div className="flex gap-4 ml-auto">
