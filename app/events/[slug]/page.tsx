@@ -85,10 +85,10 @@ export default function EventDetailPage() {
           />
         </div>
 
-        <p className="text-lg leading-relaxed text-slate-700">
-          {event.description}
-        </p>
-
+        <div
+          className="text-lg leading-relaxed text-slate-700"
+          dangerouslySetInnerHTML={{ __html: event.description }}
+        />
       </article>
     </main>
   );
